@@ -1,22 +1,31 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import type { RootState } from 'store/store';
+import { useSelector,useDispatch } from 'react-redux';
+import type { RootState,AppDispatch } from 'store/store';
 import ContentCard from 'components/ContentCard';
-// import 'styles.css';
+import { fetchContent } from 'store/slices/contentSlice';
+
+import './index.scss';
 
 const ContentList: React.FC = () => {
-    const contentItems = useSelector((state: RootState) => state.content.items);
-    const loading = useSelector((state: RootState) => state.ui.loading);
+    const dispatch = useDispatch<AppDispatch>();
+    const contentItems = useSelector((state: RootState) => state.content.filteredItems);
+     const status = useSelector((state: RootState) => state.content.status);
+    const error = useSelector((state: RootState) => state.content.error);
+
+    React.useEffect(() => {
+        dispatch(fetchContent({}));
+    }, [dispatch]);
 
     return (
         <div className="content-list">
-            {loading && <p>Loading...</p>}
-            {contentItems.length === 0 && !loading && <p>No content available.</p>}
+            {status === 'loading' && <p>Loading...</p>}
+            {status === 'failed' && <p>{error}</p>}
+            {status !== 'loading' && contentItems.length === 0 && <p>No content available.</p>}
             {contentItems.map(item => (
                 <ContentCard
                     key={item.id}
                     {...item}
-                    imageUrl={item?.imagePath}
+                    imageUrl={item?.imagePath || ''}
                     onClick={() => console.log(item.id)}
                 />
             ))}
