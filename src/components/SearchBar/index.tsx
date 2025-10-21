@@ -1,13 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import type { AppDispatch } from 'store/store';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setSearchTerm } from 'store/slices/contentSlice';
 import useDebouncedSearch from 'hooks/useDebouncedSearch';
 import './index.scss';
 
 const SearchBar: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const [searchTerm, setSearchTermState] = React.useState('');
+    const dispatch = useAppDispatch();
+    const searchTerm = useAppSelector(s=>s.content.searchKeyword);
 
     const debouncedSearchTerm = useDebouncedSearch(searchTerm, 500);
 
@@ -16,7 +15,7 @@ const SearchBar: React.FC = () => {
     }, [debouncedSearchTerm, dispatch]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTermState(event.target.value);
+        dispatch(setSearchTerm(event.target.value));
     };
       const performSearch = React.useCallback(() => {
         dispatch(setSearchTerm(searchTerm));

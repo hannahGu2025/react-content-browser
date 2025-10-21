@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setPricingOptions, resetFilters,PricingOption } from 'store/slices/contentSlice';
 
 const ContentFilter: React.FC = () => {
-    const dispatch = useDispatch();
-     const [selected, setSelected] = useState<number[]>([]);
+    const dispatch = useAppDispatch();
+     const selected = useAppSelector(s => s.content.selectedPricingOptions ?? []);
 
 
     const toggleOption = (opt: PricingOption) => {
-        setSelected(prev => {
-            const exists = prev.includes(opt);
-            const next = exists ? prev.filter(v => v !== opt) : [...prev, opt];
+            const exists = selected.includes(opt);
+            const next = exists ? selected.filter(v => v !== opt) : [...selected, opt];
             // dispatch to redux to filter items
             dispatch(setPricingOptions(next));
-            return next;
-        });
+       
     };
 
     const handleReset = () => {
-        setSelected([]);
         dispatch(resetFilters());
-        // also ensure pricing options in store reset
         dispatch(setPricingOptions([]));
     };
 

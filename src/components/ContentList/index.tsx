@@ -3,10 +3,13 @@ import { useSelector,useDispatch } from 'react-redux';
 import type { RootState,AppDispatch } from 'store/store';
 import ContentCard from 'components/ContentCard';
 import { fetchContent } from 'store/slices/contentSlice';
+import useFilterUrlSync from 'hooks/useFilterUrlSync';
 
 import './index.scss';
 
 const ContentList: React.FC = () => {
+     // sync filter state <-> URL
+     useFilterUrlSync();
     const dispatch = useDispatch<AppDispatch>();
     const contentItems = useSelector((state: RootState) => state.content.filteredItems);
      const status = useSelector((state: RootState) => state.content.status);

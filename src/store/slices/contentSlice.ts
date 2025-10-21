@@ -100,7 +100,6 @@ const contentSlice = createSlice({
                 // if no option selected, treat as show none -> but we prefer show all when empty selection? 
                 // 这里遵循：空数组 => 不筛选（显示全部）
                 if (action.payload.length === 0) return true;
-                console.log(4444, action.payload ,item.pricingOption);
                 return action.payload.includes(item.pricingOption);
             });
 
