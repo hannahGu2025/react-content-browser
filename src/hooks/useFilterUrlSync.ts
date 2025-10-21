@@ -14,13 +14,16 @@ export default function useFilterUrlSync() {
     const q = params.get('q') ?? '';
     const pricingParam = params.get('pricing') ?? '';
     const pricing = pricingParam
-      ? pricingParam.split(',').map(n => Number(n)).filter(n => !Number.isNaN(n))
+      ? pricingParam
+          .split(',')
+          .map(n => Number(n))
+          .filter(n => !Number.isNaN(n))
       : [];
 
     if (q) dispatch(setSearchTerm(q));
     if (pricing.length) dispatch(setPricingOptions(pricing));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },  [dispatch]); // run only once
+  }, [dispatch]); // run only once
 
   // push store -> url when filters change
   React.useEffect(() => {
@@ -31,11 +34,11 @@ export default function useFilterUrlSync() {
     }
 
     const next = params.toString() ? `?${params.toString()}` : '';
-     const current = window.location.search || '';
+    const current = window.location.search || '';
     if (next !== current) {
       const newUrl = window.location.pathname + next + window.location.hash;
       window.history.replaceState(null, '', newUrl);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchKeyword, selectedPricingOptions,window.location.pathname]);
+  }, [searchKeyword, selectedPricingOptions, window.location.pathname]);
 }

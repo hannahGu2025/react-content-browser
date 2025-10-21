@@ -4,9 +4,10 @@ export const filterContentByKeyword = <T extends { title?: string; description?:
 ): T[] => {
   if (!keyword || keyword.trim() === '') return content;
   const k = keyword.toLowerCase();
-  return content.filter(item =>
-    (item.title ?? '').toLowerCase().includes(k) ||
-    (item.description ?? '').toLowerCase().includes(k)
+  return content.filter(
+    item =>
+      (item.title ?? '').toLowerCase().includes(k) ||
+      (item.description ?? '').toLowerCase().includes(k)
   );
 };
 
