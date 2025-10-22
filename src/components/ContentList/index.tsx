@@ -30,6 +30,7 @@ const ContentList: React.FC = () => {
   React.useEffect(() => {
     const node = loaderRef.current;
     if (!node) return;
+     const root = node.parentElement;
     const io = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -46,7 +47,7 @@ const ContentList: React.FC = () => {
           });
         });
       },
-      { root: null, rootMargin: '300px', threshold: 0.1 }
+      { root, rootMargin: '300px', threshold: 0.1 }
     );
 
     io.observe(node);
