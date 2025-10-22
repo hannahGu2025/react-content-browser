@@ -1,19 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchContent as fetchContentAPI } from 'api/contentService';
-
-export enum PricingOption {
-  PAID = 0,
-  FREE = 1,
-  VIEW_ONLY = 2,
-}
-interface ContentItem {
-  creator: string;
-  id: string;
-  imagePath: string;
-  price: number;
-  pricingOption: PricingOption;
-  title: string;
-}
+import { PricingOption, ContentItem } from 'types/index';
 
 interface ContentState {
   items: ContentItem[];
@@ -25,18 +12,20 @@ interface ContentState {
   error?: string | null;
   selectedPricingOptions: PricingOption[];
   hasMore: boolean;
+  initialLoaded: boolean;
 }
 
 const initialState: ContentState = {
   items: [],
   filteredItems: [],
   searchKeyword: '',
-  currentPage: 0,
+  currentPage: 1,
   itemsPerPage: 10,
   status: 'idle',
   error: null,
   selectedPricingOptions: [],
   hasMore: true,
+  initialLoaded: false,
 };
 
 export const fetchContent = createAsyncThunk(
@@ -126,6 +115,7 @@ const contentSlice = createSlice({
             // replace on first page / refresh
             state.items = items;
             state.filteredItems = items;
+            state.initialLoaded = true;
           }
           state.currentPage = page;
           // 如果返回少于 pageSize，则没有更多

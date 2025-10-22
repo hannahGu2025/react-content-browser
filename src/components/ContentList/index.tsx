@@ -18,9 +18,16 @@ const ContentList: React.FC = () => {
   const currentPage = useAppSelector((s: RootState) => s.content.currentPage);
   const itemsPerPage = useAppSelector((s: RootState) => s.content.itemsPerPage);
   const hasMore = useAppSelector((s: RootState) => s.content.hasMore);
+  const initialLoaded = useAppSelector((s: RootState) => s.content.initialLoaded);
 
   const loaderRef = React.useRef<HTMLDivElement | null>(null);
   const loadingRef = React.useRef(false);
+
+  React.useEffect(() => {
+   if (!initialLoaded && contentItems.length === 0 && status !== 'loading') {
+     dispatch(fetchContent({ page: 1, pageSize: itemsPerPage }));
+    }
+  }, [dispatch, contentItems.length, itemsPerPage, status, initialLoaded]);
 
   React.useEffect(() => {
     const node = loaderRef.current;
@@ -29,16 +36,16 @@ const ContentList: React.FC = () => {
       entries => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
+          if (contentItems.length === 0) return;
           if (loadingRef.current) return;
           if (status === 'loading') return;
           if (!hasMore) return;
 
           loadingRef.current = true;
           const nextPage = (currentPage || 1) + 1;
-          dispatch(fetchContent({ page: nextPage, pageSize: itemsPerPage }))
-            .finally(() => {
-              loadingRef.current = false;
-            });
+          dispatch(fetchContent({ page: nextPage, pageSize: itemsPerPage })).finally(() => {
+            loadingRef.current = false;
+          });
         });
       },
       { root: null, rootMargin: '300px', threshold: 0.1 }
