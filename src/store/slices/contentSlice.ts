@@ -24,42 +24,27 @@ interface ContentState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error?: string | null;
   selectedPricingOptions: PricingOption[];
+  hasMore: boolean;
 }
 
 const initialState: ContentState = {
   items: [],
   filteredItems: [],
   searchKeyword: '',
-  currentPage: 1,
+  currentPage: 0,
   itemsPerPage: 10,
   status: 'idle',
   error: null,
   selectedPricingOptions: [],
+  hasMore: true,
 };
 
 export const fetchContent = createAsyncThunk(
   'content/fetch',
-  async (
-    params: {
-      filters?: any;
-      searchTerm?: string;
-      page?: number;
-      maxPrice?: number;
-      minPrice?: number;
-      pricingOptions?: PricingOption[];
-    } = {}
-  ) => {
-    const {
-      filters = {},
-      searchTerm = '',
-      page = 1,
-      maxPrice = 999999999,
-      minPrice = 0,
-      pricingOptions = [],
-    } = params;
-    const data = await fetchContentAPI(filters, searchTerm, page);
-    // 适配后端返回：若返回对象 { items: [...] } 则取 items，否则直接返回数组
-    return Array.isArray(data) ? data : (data?.items ?? []);
+  async (params: { page?: number; pageSize?: number } = {}) => {
+    const { page = 1, pageSize = 10 } = params;
+    const data = await fetchContentAPI({ page, pageSize });
+    return { items: Array.isArray(data) ? data : (data?.items ?? []), page, pageSize };
   }
 );
 
@@ -125,11 +110,28 @@ const contentSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(fetchContent.fulfilled, (state, action: PayloadAction<ContentItem[]>) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
-        state.filteredItems = action.payload;
-      })
+      .addCase(
+        fetchContent.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ items: ContentItem[]; page: number; pageSize: number }>
+        ) => {
+          state.status = 'succeeded';
+          const { items, page, pageSize } = action.payload as any;
+          if (page > 1) {
+            // append
+            state.items = [...state.items, ...items];
+            state.filteredItems = [...state.filteredItems, ...items];
+          } else {
+            // replace on first page / refresh
+            state.items = items;
+            state.filteredItems = items;
+          }
+          state.currentPage = page;
+          // 如果返回少于 pageSize，则没有更多
+          state.hasMore = !(Array.isArray(items) && items.length < pageSize);
+        }
+      )
       .addCase(fetchContent.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Failed to fetch content';

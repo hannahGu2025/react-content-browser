@@ -2,17 +2,15 @@ import axios from 'axios';
 
 const API_URL = 'https://closet-recruiting-api.azurewebsites.net/api/data'; // Replace with your actual API URL
 
-export const fetchContent = async (filters = {}, searchTerm = '', page = 1) => {
-    try {
-        const response = await axios.post(API_URL, {
-               ...filters,
-                keyword: searchTerm,
-                page: page,
-           
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching content:', error);
-        throw error;
-    }
+export const fetchContent = async ({page = 1, pageSize = 10}) => {
+  try {
+    const response = await axios.post(API_URL, {
+      pageSize,
+      page,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching content:', error);
+    throw error;
+  }
 };
