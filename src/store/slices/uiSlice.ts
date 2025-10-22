@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface ModalContent {
   title?: string;
   description?: string;
-  imageUrl?: string;
   imagePath?: string;
   [key: string]: any;
 }

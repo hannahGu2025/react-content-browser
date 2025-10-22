@@ -1,10 +1,15 @@
+export enum PricingOption {
+  PAID = 0,
+  FREE = 1,
+  VIEW_ONLY = 2,
+}
 export interface ContentItem {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl: string;
+  creator: string;
+    id: string;
+    imagePath: string;
+    price: number;
+    pricingOption: PricingOption;
+    title: string;
 }
 
 export interface FilterOptions {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { setPricingOptions, resetFilters, PricingOption } from 'store/slices/contentSlice';
+import { setPricingOptions, resetFilters } from 'store/slices/contentSlice';
+import { PricingOption } from 'types/index';
 
 const ContentFilter: React.FC = () => {
   const dispatch = useAppDispatch();

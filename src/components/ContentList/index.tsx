@@ -1,31 +1,29 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import type { RootState, AppDispatch } from 'store/store';
 import ContentCard from 'components/ContentCard';
 import { fetchContent } from 'store/slices/contentSlice';
 import useFilterUrlSync from 'hooks/useFilterUrlSync';
-import { useAppSelector } from 'store/hooks';
+import { useAppSelector, useAppDispatch } from 'store/hooks';
 
 import './index.scss';
 
 const ContentList: React.FC = () => {
   // sync filter state <-> URL
   useFilterUrlSync();
-  const dispatch = useDispatch<AppDispatch>();
-  const contentItems = useSelector((state: RootState) => state.content.filteredItems);
-  const status = useSelector((state: RootState) => state.content.status);
-  const error = useSelector((state: RootState) => state.content.error);
-  const currentPage = useAppSelector((s: RootState) => s.content.currentPage);
-  const itemsPerPage = useAppSelector((s: RootState) => s.content.itemsPerPage);
-  const hasMore = useAppSelector((s: RootState) => s.content.hasMore);
-  const initialLoaded = useAppSelector((s: RootState) => s.content.initialLoaded);
+  const dispatch = useAppDispatch();
+  const contentItems = useAppSelector(state => state.content.filteredItems);
+  const status = useAppSelector(state => state.content.status);
+  const error = useAppSelector(state => state.content.error);
+  const currentPage = useAppSelector(state => state.content.currentPage);
+  const itemsPerPage = useAppSelector(state => state.content.itemsPerPage);
+  const hasMore = useAppSelector(state => state.content.hasMore);
+  const initialLoaded = useAppSelector(state => state.content.initialLoaded);
 
   const loaderRef = React.useRef<HTMLDivElement | null>(null);
   const loadingRef = React.useRef(false);
 
   React.useEffect(() => {
-   if (!initialLoaded && contentItems.length === 0 && status !== 'loading') {
-     dispatch(fetchContent({ page: 1, pageSize: itemsPerPage }));
+    if (!initialLoaded && contentItems.length === 0 && status !== 'loading') {
+      dispatch(fetchContent({ page: 1, pageSize: itemsPerPage }));
     }
   }, [dispatch, contentItems.length, itemsPerPage, status, initialLoaded]);
 
@@ -60,11 +58,11 @@ const ContentList: React.FC = () => {
       {status === 'loading' && <p>Loading...</p>}
       {status === 'failed' && <p>{error}</p>}
       {status !== 'loading' && contentItems.length === 0 && <p>No content available.</p>}
-      {contentItems.map(item => (
+      {contentItems.map((item,index) => (
         <ContentCard
-          key={item.id}
+          key={`${index}-${item.id}`}
           {...item}
-          imageUrl={item?.imagePath || ''}
+          imagePath={item?.imagePath || ''}
           onClick={() => console.log(item.id)}
         />
       ))}

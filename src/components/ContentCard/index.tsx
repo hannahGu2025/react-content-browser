@@ -1,12 +1,12 @@
 import React from 'react';
-import { PricingOption } from 'store/slices/contentSlice';
+import { PricingOption } from 'types/index';
 
 import './index.scss';
 
 interface ContentCardProps {
   title: string;
   creator: string;
-  imageUrl: string;
+  imagePath: string;
   onClick: () => void;
   price: number;
   pricingOption: PricingOption;
@@ -16,7 +16,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
   title,
   creator,
   pricingOption,
-  imageUrl,
+  imagePath,
   onClick,
   price,
 }) => {
@@ -24,7 +24,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
     if (pricingOption === PricingOption.VIEW_ONLY) {
       return { label: 'View Only', variant: 'variant--view-only' };
     }
-    if (price > 0) {
+    if (pricingOption === PricingOption.PAID) {
       return { label: `$${price}`, variant: 'variant--paid' };
     }
     return { label: 'Free', variant: 'variant--free' };
@@ -32,7 +32,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
 
   return (
     <div className="content-card" onClick={onClick}>
-      <img src={imageUrl} alt={title} className="content-card-image" />
+      <img src={imagePath} alt={title} className="content-card-image" />
       <div className="content-card-body">
         <div className="content-card-left">
           <h3 className="content-card-title">{title}</h3>

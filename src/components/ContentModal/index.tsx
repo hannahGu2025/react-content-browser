@@ -1,11 +1,10 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from 'store/slices/uiSlice';
-import { RootState } from 'store/store';
+import { useAppSelector, useAppDispatch } from 'store/hooks';
 
 const ContentModal: React.FC = () => {
-  const dispatch = useDispatch();
-  const { isOpen, content } = useSelector((state: RootState) => state.ui);
+  const dispatch = useAppDispatch();
+  const { isOpen, content } = useAppSelector(state => state.ui);
 
   if (!isOpen || !content) {
     return null;
@@ -23,7 +22,7 @@ const ContentModal: React.FC = () => {
         </button>
         <h2>{content.title}</h2>
         <p>{content.description}</p>
-        <img src={content.imageUrl} alt={content.title} />
+        <img src={content.imagePath} alt={content.title} />
       </div>
     </div>
   );
