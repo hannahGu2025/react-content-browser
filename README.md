@@ -1,66 +1,36 @@
-# React Content Browser
+# Project Overview
 
-This project is a React application that allows users to browse and filter content based on various criteria. It includes features such as keyword search, content filtering, and pagination.
+This project is a React + TypeScript + Redux Toolkit content browser supporting debounced search, pricing filters, infinite-scroll pagination, and a content-detail modal. The codebase is organized by feature for clarity and maintainability.
 
-## Features
+---
 
-- **Content Filtering**: Users can filter content based on pricing options and reset filters easily.
-- **Keyword Search**: A search bar allows users to search for content using keywords.
-- **Content List Display**: The application displays a list of content items with infinite scroll functionality.
-- **Content Details**: Users can view detailed information about each content item in a modal.
-- **Pagination**: The application supports pagination for navigating through content items.
+## Table of contents
+- [Main features](#main-features)  
+- [Strengths / Highlights](#strengths--highlights)  
+- [Areas to improve](#areas-to-improve)  
+- [Quick actionable fixes](#quick-actionable-fixes)  
+- [How to run / check locally](#how-to-run--check-locally)
 
-## Getting Started
+---
 
-### Prerequisites
+## Main features
+- Debounced keyword search — `src/hooks/useDebouncedSearch.ts` + `components/SearchBar`  
+- Pricing filter — `components/ContentFilter` + `store/slices/contentSlice.ts`  
+- Infinite scrolling pagination — `components/ContentList` + `fetchContent` thunk + `IntersectionObserver`  
+- Content cards & detail modal — `components/ContentCard`, `components/ContentModal`  
+- Global state — Redux Toolkit (`store/store.ts`, `store/slices/*`)  
+- URL ↔ filter sync — `hooks/useFilterUrlSync.ts`  
+- Styling — SCSS (`styles/global.scss` and per-component `.scss`)
 
-- Node.js (version 14 or higher)
-- npm (version 5.6 or higher)
+---
 
-### Installation
+## Strengths / Highlights
+- Clear, feature-oriented folder structure (components, hooks, store, api, types).  
+- Modern, typed stack: TypeScript + Redux Toolkit + hooks for safer, concise code.  
+- UX-minded details: debounced search and URL sync improve responsiveness and shareability.  
+- Robust async pattern: `createAsyncThunk` + lazy-loading via `IntersectionObserver`.  
+- Reusable components (cards, filters, modal) enabling easy extension.
+---
 
-1. Clone the repository:
-
-   ```
-   git clone <repository-url>
-   ```
-
-2. Navigate to the project directory:
-
-   ```
-   cd react-content-browser
-   ```
-
-3. Install the dependencies:
-
-   ```
-   npm install
-   ```
-
-### Running the Application
-
-To start the development server, run:
-
-```
-npm start
-```
-
-The application will be available at `http://localhost:3000`.
-
-### Building for Production
-
-To create a production build, run:
-
-```
-npm run build
-```
-
-This will generate a `build` directory with the optimized production files.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
-## License
-
-This project is licensed under the MIT License.
+## Shortcoming 
+- The API is unclear — I guessed it uses page and pageSize parameters; those don't seem to take effect, but it doesn't affect the frontend. This can be improved later.
