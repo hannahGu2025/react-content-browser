@@ -7,9 +7,7 @@ This project is a React + TypeScript + Redux Toolkit content browser supporting 
 ## Table of contents
 - [Main features](#main-features)  
 - [Strengths / Highlights](#strengths--highlights)  
-- [Areas to improve](#areas-to-improve)  
-- [Quick actionable fixes](#quick-actionable-fixes)  
-- [How to run / check locally](#how-to-run--check-locally)
+- [Shortcoming](#shortcoming)  
 
 ---
 
@@ -17,7 +15,7 @@ This project is a React + TypeScript + Redux Toolkit content browser supporting 
 - Debounced keyword search — `src/hooks/useDebouncedSearch.ts` + `components/SearchBar`  
 - Pricing filter — `components/ContentFilter` + `store/slices/contentSlice.ts`  
 - Infinite scrolling pagination — `components/ContentList` + `fetchContent` thunk + `IntersectionObserver`  
-- Content cards & detail modal — `components/ContentCard`, `components/ContentModal`  
+- Content cards  — `components/ContentCard`  
 - Global state — Redux Toolkit (`store/store.ts`, `store/slices/*`)  
 - URL ↔ filter sync — `hooks/useFilterUrlSync.ts`  
 - Styling — SCSS (`styles/global.scss` and per-component `.scss`)
