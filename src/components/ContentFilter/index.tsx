@@ -28,6 +28,7 @@ const ContentFilter: React.FC = () => {
         justifyContent: 'space-between',
         padding: '12px 18px',
         borderRadius: 12,
+        fontSize: 12
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
@@ -96,6 +97,7 @@ const ContentFilter: React.FC = () => {
           color: '#bdbdbd',
           cursor: 'pointer',
           fontWeight: 700,
+          fontSize: 12,
         }}
         aria-label="Reset filters"
       >

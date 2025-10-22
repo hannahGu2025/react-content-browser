@@ -6,6 +6,61 @@
   padding: 12px;
   grid-template-columns: repeat(4, 1fr); // default 4 columns
   background: #1f1f23;
+  color: #fff;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+
+  .content-list__status {
+    grid-column: 1 / -1; /* span full width of the grid row */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 18px;
+    margin: 8px 0;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #cfcfcf;
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: none;
+  }
+
+  .content-list__status--loading {
+    color: #9fb7ff;
+    background: rgba(31, 95, 255, 0.04);
+  }
+
+  .content-list__status--error {
+    color: #ff7b7b;
+    background: rgba(255, 123, 123, 0.04);
+  }
+
+  .content-list__status--empty {
+    color: #bdbdbd;
+    background: transparent;
+  }
+  .content-list__status--loading {
+    color: #9fb7ff;
+    background: rgba(31, 95, 255, 0.04);
+  }
+
+  .content-list__spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.22);
+    border-top-color: currentColor;
+    animation: content-list-spin 0.8s linear infinite;
+    flex: 0 0 16px;
+  }
+}
+
+@keyframes content-list-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* breakpoints */

@@ -55,9 +55,22 @@ const ContentList: React.FC = () => {
 
   return (
     <div className="content-list">
-      {status === 'loading' && <p>Loading...</p>}
-      {status === 'failed' && <p>{error}</p>}
-      {status !== 'loading' && contentItems.length === 0 && <p>No content available.</p>}
+      {status === 'loading' && (
+        <div className="content-list__status content-list__status--loading" role="status" aria-live="polite">
+          <span className="content-list__spinner" aria-hidden />
+          <span>Loading…</span>
+        </div>
+      )}
+      {status === 'failed' && (
+        <div className="content-list__status content-list__status--error" role="alert">
+          <span>{error || 'Failed to load content.'}</span>
+        </div>
+      )}
+      {status !== 'loading' && contentItems.length === 0 && (
+        <div className="content-list__status content-list__status--empty" aria-live="polite">
+          <span>No content available.</span>
+        </div>
+      )}
       {contentItems.map((item,index) => (
         <ContentCard
           key={`${index}-${item.id}`}

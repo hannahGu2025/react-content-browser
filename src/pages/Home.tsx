@@ -3,12 +3,19 @@ import ContentFilter from 'components/ContentFilter';
 import ContentList from 'components/ContentList';
 import SearchBar from 'components/SearchBar';
 
+import './Home.scss';
+
 const Home: React.FC = () => {
   return (
-    <div style={{ background: '#000' }}>
-      <SearchBar />
-      <ContentFilter />
-      <ContentList />
+     <div className="page">
+      <header className="page__header">
+        <SearchBar />
+        <ContentFilter />
+      </header>
+
+      <main className="page__content">
+        <ContentList />
+      </main>
     </div>
   );
 };

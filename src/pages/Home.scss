@@ -1,0 +1,17 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+  padding: 0 20px;
+  background: #000;
+}
+
+.page__header {
+  flex: 0 0 auto; 
+}
+
+.page__content {
+  flex: 1 1 auto;
+  min-height: 0; 
+  overflow: hidden; 
+}
