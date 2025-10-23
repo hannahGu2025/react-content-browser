@@ -2,6 +2,9 @@
   "name": "react-content-browser",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=v16.16.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
